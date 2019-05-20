@@ -81,6 +81,18 @@
                         </div>
                         <div class="box-body">
                             <div id="myGrid" style="height: 400px;width:100%;" class="ag-theme-balham"></div>
+                            <div class="ag-paging-panel ag-unselectable">
+                                <span ref="eSummaryPanel" class="ag-paging-row-summary-panel">
+                                    共<span ref="lbRecordCount">3</span>条
+                                </span>
+                                <span class="ag-paging-page-summary-panel">
+                                    <button type="button" class="ag-paging-button" ref="btFirst" disabled="">First</button>
+                                    <button type="button" class="ag-paging-button" ref="btPrevious" disabled="">Previous</button>
+                                    第 <span ref="lbCurrent">1</span> 到第 <span ref="lbTotal">2</span> 页
+                                    <button type="button" class="ag-paging-button" ref="btNext">Next</button>
+                                    <button type="button" class="ag-paging-button" ref="btLast">Last</button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
