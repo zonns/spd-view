@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>首页</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../../plugins/layui/css/layui.css">
+    <link rel="stylesheet" href="../../plugins/ag-grid/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="../../plugins/ag-grid/dist/styles/ag-theme-balham.css">
+    <link rel="stylesheet" href="../../dist/css/style.css">
+
+    <style>
+        .layui-table-body .laytable-cell-1-0-1 {
+            height: 45px;
+            line-height: 45px;
+        }
+
+        .layui-table-body .laytable-cell-1-0-4 {
+            height: auto;
+            line-height: initial;
+            overflow: initial;
+        }
+        .ag-theme-balham .ag-ltr .ag-row-group-leaf-indent {
+            margin-left: 0 !important;
+        }
+        .ag-theme-balham .ag-header {
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue new-skin-blue sidebar-mini new-bg-gray2">
+    <!-- Main content -->
+    <div id="admin">
+        <section class="content">
+            <!-- /.row -->
+            <div class="row">
+                <!-- <div class="col-md-12">
+                    <div class="box no-border">
+                        <div class="box-header with-border">
+                            <h4 class="box-title new-box-title">查询表单</h4>
+                            <div class="pull-right">
+                                <button type="button" class="btn new-btn-sm btn-info searchBtn"> 查询</button>
+                                <button type="reset" class="btn new-btn-sm btn-white clearBtn"> 清空</button>
+                                <button type="button" class="btn new-btn-sm btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-horizontal">
+                                <div class="input-group">
+                                    <label for="" class="col-sm-3 no-padding-lf control-label">用户：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control input-sm" id="userName"
+                                            placeholder="账户/用户名/手机号/邮箱">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-12">
+                    <div class="box no-border">
+                        <div class="box-header with-border">
+                            <h4 class="box-title new-box-title">用户明细</h4>
+                            <div class="pull-right">
+                                <button type="button" class="btn new-btn-sm btn-info addBtn" data-toggle="modal"
+                                    data-target="#userInfoModal"> 新增</button>
+                                <button type="button" class="btn new-btn-sm btn-red deletBtn"> 删除</button>
+                                <button type="button" class="btn new-btn-sm btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div id="myGrid" style="height: 400px;width:100%;" class="ag-theme-balham"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../plugins/ag-grid/dist/ag-grid-community.js"></script>
+    <script src="../../dist/js/ag-grid-components.js"></script>
+    <script src="../../dist/js/app.js"></script>
+    <script>
+        var gridOptions = {
+            columnDefs: [ // 表头
+                { headerName: "头像", field: "img", rowGroup: true,cellRenderer: function(params){
+                    let array = params.value
+                    return `<img style="height: 100%" src="${params.value}" />`
+                }},
+                {
+                    headerName: "帐号", field: "experience", sortable: true,editable: true, filter: 'personFilter',floatingFilterComponent: "personFloatingFilterComponent", tooltipField: 'experience'
+                },
+                { headerName: "姓名", field: "name", cellEditor: 'agRichSelectCellEditor', },
+                { headerName: "角色", field: "juese", cellEditor: 'agSelectCellEditor', },
+                { headerName: "手机", field: "phone", cellEditor: 'agRichSelectCellEditor', },
+                { headerName: "邮箱", field: "email", cellEditor: 'agRichSelectCellEditor', tooltipField: 'email'},
+                { headerName: "是否启用", field: "isUse", editable: true,
+                    cellEditor: 'agSelectCellEditor',
+                    cellEditorParams: {
+                        values: ['是', '否']
+                    }
+                }
+            ],
+            rowSelection: 'multiple',
+            autoGroupColumnDef: { // 显示复选框
+                headerName: "用户ID",
+                field: "userid",
+                cellClass: {'text-align': 'left'},
+                headerCheckboxSelection: true,
+                headerCheckboxSelectionFilteredOnly: true,
+                cellRenderer: 'agGroupCellRenderer',
+                cellRendererParams: {
+                    checkbox: true
+                }
+            },
+            suppressRowClickSelection: true,
+            animateRows: true, // 动画
+            floatingFilter: true,
+            pagination: true, // 分页
+            paginationPageSize: 2,
+            suppressPaginationPanel: true,
+            onGridReady: function () {//表格创建完成后执行
+                gridOptions.api.sizeColumnsToFit();//调整表格大小自适应
+            },
+            onCellEditingStarted: function (event) { // 单元格编辑开始
+                console.log('开始');
+            },
+            onCellEditingStopped: function (event) { // 单元格编辑结束
+                console.log('结束');
+            },
+            onPaginationChanged: function(){
+                console.log('onPaginationPageLoaded');
+            },
+            components: { // 自定义组件
+                personFilter: PersonFilter,
+                personFloatingFilterComponent: PersonFloatingFilterComponent,
+            }
+        };
+      
+        function setText(selector, text) {
+            document.querySelector(selector).innerHTML = text;
+        }
+
+        fetch('https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/admin_user').then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            console.log(data)
+
+            gridOptions.api.setRowData(data.data.data);
+            gridOptions.api.paginationSetPageSize(2)
+        })
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var eGridDiv = document.querySelector('#myGrid');
+
+            new agGrid.Grid(eGridDiv, gridOptions);
+        })
+
+    </script>
+</body>
+
+</html>

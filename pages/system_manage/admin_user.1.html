@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>首页</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../../plugins/layui/css/layui.css">
+    <link rel="stylesheet" href="../../plugins/layui-formSelects/dist/formSelects-v4.css">
+    <link rel="stylesheet" href="../../dist/css/style.css">
+    <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../dist/js/app.js"></script>
+    <script src="../../plugins/vue/dist/vue.min.js"></script>
+    <script src="../../plugins/layui/layui.js"></script>
+    <script src="../../plugins/layui-formSelects/dist/formSelects-v4.js"></script>
+    <style>
+        .layui-table-body .laytable-cell-1-0-1 {
+            height: 45px;
+            line-height: 45px;
+        }
+
+        .layui-table-body .laytable-cell-1-0-4 {
+            height: auto;
+            line-height: initial;
+            overflow: initial;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue new-skin-blue sidebar-mini new-bg-gray2">
+    <!-- Main content -->
+    <div id="admin">
+        <section class="content">
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box no-border">
+                        <div class="box-header with-border">
+                            <h4 class="box-title new-box-title">查询表单</h4>
+                            <div class="pull-right">
+                                <button type="button" class="btn new-btn-sm btn-info searchBtn"> 查询</button>
+                                <button type="reset" class="btn new-btn-sm btn-white clearBtn"> 清空</button>
+                                <button type="button" class="btn new-btn-sm btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-horizontal">
+                                <div class="input-group">
+                                    <label for="" class="col-sm-3 no-padding-lf control-label">用户：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control input-sm" id="userName"
+                                            placeholder="账户/用户名/手机号/邮箱">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box no-border">
+                        <div class="box-header with-border">
+                            <h4 class="box-title new-box-title">用户明细</h4>
+                            <div class="pull-right">
+                                <button type="button" class="btn new-btn-sm btn-info addBtn" data-toggle="modal"
+                                    data-target="#userInfoModal"> 新增</button>
+                                <button type="button" class="btn new-btn-sm btn-red deletBtn"> 删除</button>
+                                <button type="button" class="btn new-btn-sm btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table class="layui-hide" id="test" lay-filter="testEvent"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 弹出框 -->
+        <div class="modal fade" id="userInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">添加用户</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label no-padding-lf">角色</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="" title="管理员" lay-skin="primary" checked>
+                                    <input type="checkbox" name="" title="测试组" lay-skin="primary">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label no-padding-lf">帐号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入用户帐号"
+                                        autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label no-padding-lf">密码</label>
+                                <div class="layui-input-block">
+                                    <input type="password" name="password" placeholder="不修改无须填写" autocomplete="off"
+                                        class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label no-padding-lf">姓名或昵称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" required lay-verify="required"
+                                        placeholder="请输入用户姓名或昵称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label no-padding-lf">手机号</label>
+                                <div class="layui-input-block">
+                                    <input type="tel" name="telephone" required lay-verify="required|phone|number"
+                                        placeholder="请输入用户手机号" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label no-padding-lf">邮箱</label>
+                                <div class="layui-input-block">
+                                    <input type="email" name="telephone" lay-verify="email" placeholder="请输入用户邮箱"
+                                        autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label no-padding-lf">是否启用</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="switch" lay-skin="switch" lay-text="是|否">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="btn new-btn-normal btn-blackb" lay-submit
+                                        lay-filter="formDemo">立即提交</button>
+                                    <button type="reset" class="btn new-btn-normal layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn new-btn-normal btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn new-btn-normal btn-blackb">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义模板 -->
+    <script type="text/html" id="headimg">
+        <img style="max-width:45px; max-height:45px" src="{{d.img}}" />
+    </script>
+        <script type="text/html" id="switchUse">
+        <input type="checkbox" name="isUse" value="{{d.isUse}}" lay-skin="switch" lay-text="是|否" lay-filter="checlUse" {{ d.isUse == 1 ? 'checked' : '' }}>
+    </script>
+        <script type="text/html" id="jueseSelect">
+        <select name="juese" xm-select="select14_{{d.userid}}" xm-select-skin="default" lay-verify="required" lay-vertype="tips">
+            <option value="1">管理员</option>
+            <option value="2">测试组</option>
+        </select>
+    </script>
+    <script>
+        layui.use('table', function () {
+            var table = layui.table, form = layui.form, formSelect = layui.formSelects;
+
+            var tableIns = table.render({
+                elem: '#test'
+                , url: 'https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/admin_user',
+                title: '用户数据表',
+                cellMinWidth: 80,
+                cols: [[
+                    { field: 'userid', title: '用户ID' }
+                    , { field: 'img', title: '头像', width: 75, templet: "#headimg", style: 'height:45px;', event: 'changeImg' }
+                    , { field: 'experience', title: '帐号' }
+                    , { field: 'name', title: '姓名', edit: 'text', }
+                    , { field: 'juese', title: '角色', width: 225, templet: "#jueseSelect"},  // "#jueseSelect"
+                    { field: 'phone', title: '手机' }
+                    , { field: 'email', title: '邮箱' },
+                    { field: "isUse", title: "是否启用", templet: "#switchUse", unresize: true }
+                ]],
+                page: true,
+                limit: 5,
+                response: {
+                    statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+                },
+                loading: false
+                , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    return {
+                        "code": res.data.code, //解析接口状态
+                        "msg": res.data.message, //解析提示文本
+                        // "count": res.count, //解析数据长度
+                        "data": res.data.data //解析数据列表
+                    };
+                },
+                done:function(data,a){
+                    formSelect.render()
+                    
+                    data.data.forEach(element => {
+                        formSelect.value("select14_"+element.userid,element.juese)
+                    });
+                }
+            });
+
+            //监听单元格编辑
+            table.on('edit(testEvent)', function (obj) {
+                console.log(obj)
+                var value = obj.value //得到修改后的值
+                    , data = obj.data //得到所在行所有键值
+                    , field = obj.field; //得到字段
+                layer.msg('[ID: ' + data.userid + '] ' + field + ' 字段更改为：' + value);
+                var e=window.event||e
+                console.log(e)
+                if(e.keyCode == 37) {
+                    console.log('left')
+                }
+            });
+            
+            // 是否使用
+            form.on('switch(checlUse)', function (obj) {
+                layer.tips(this.value + ' ' + this.isUse + '：' + obj.elem.checked, obj.othis);
+            });
+            // 单元格事件
+            table.on('tool(testEvent)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'changeImg') {
+                    var fileload = `<div class="layui-form-item">
+                                    <input type="file" name="title" required="" placeholder="请选择文件夹" autocomplete="off" class="layui-input">
+                                </div>`
+                    layer.open({
+                        type: 1,
+                        title: "选择文件",
+                        closeBtn: 0,
+                        shadeClose: true,
+                        skin: 'yourclass',
+                        content: fileload,
+                        btn: ["确定", "取消"],
+                        yes: function (value, data, a) {
+                            console.log(value, data, a)
+                            obj.update({
+                                // sign: value
+                            });
+                        },
+                        btn2: function (value, data, a) {
+                            console.log(value, data, a)
+                        }
+                    })
+                }
+            });
+            // 重新渲染表格
+            $(".searchBtn").on("click", function () {
+                tableIns.reload({
+                    where: {
+                        name: $("#userName").val()
+                    },
+                    page: {
+                        curr: 1
+                    }
+                })
+            })
+
+            // 自定义校验
+            form.verify({
+                "email": function (value, item) {
+                    var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+                    if (value.length > 0 && !reg.test(value)) {
+                        return '邮箱格式不正确'
+                    }
+                }
+            })
+
+            // 表单提交
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+        });
+
+        function headimg(d) {
+            return `<img style="max-width:45px; max-height:45px" src="${d.img}" />`
+        }
+
+    </script>
+</body>
+
+</html>
