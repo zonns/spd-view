@@ -122,6 +122,14 @@ button[type="reset"]:hover {
     line-height: 1;
     height: auto;
 }
+.new-btn-form-normal {
+    padding: 4px 17px;
+    font-size: 14px;
+    line-height: 1;
+    height: auto;
+}
+
+
 
 /* 
 .new-skin-blue .layui-input:focus,.new-skin-blue .layui-input:active,.new-skin-blue select:focus {
@@ -317,4 +325,73 @@ div[xm-select-skin=default] dl dd.xm-select-this:not(.xm-dis-disabled) i {
 }
 div[xm-select-skin=default] dl dd:not(.xm-dis-disabled) i {
     border-color: #5FBDFD;
+}
+.table_nav {
+    color: #757575;
+    margin-top: 5px;
+    text-align: right;
+}
+.table_nav .fa {
+    font-size: 12px;
+    padding: 0 3px;
+    border: 0;
+    background: none;
+}
+.table_nav button[disabled] {
+    cursor: pointer;
+}
+.font-15 {
+    font-size: 15px !important;
+}
+.font-12 {
+    font-size: 12px !important;
+}
+
+/*  --------------------------------------------------添加form控件 --------------------------------------------------- */
+.add-forms .layui-form-label {
+    width: auto;
+    padding: 5px 15px;
+    font-size: 12px;
+}
+.add-forms .layui-input {
+    height: 30px;
+    font-size: 12px;
+    line-height: 1;
+}
+.add-forms .layui-form-radio {
+    margin: 1px 10px 0 0;
+    font-size: 12px;
+}
+.add-forms .layui-form-checkbox {
+    margin-top: 7px;
+    line-height: 21px !important;
+}
+.add-forms .layui-inline {
+    margin-bottom: 5px;
+}
+.add-forms .layui-form-radio>i:hover, .layui-form-radioed>i {
+    color: #5FBDFD;
+}
+.add-forms .layui-anim.layui-icon {
+    font-size: 20px;
+}
+.add-forms .layui-form-radio * {
+    font-size: 12px;
+}
+.add-forms .layui-form-checkbox span {
+    font-size: 12px;
+}
+.add-forms .layui-upload {
+    /* display: inline-flex; */
+}
+.add-forms .layui-upload .btn-upload {
+    height: 23px;
+    line-height: 1;
+    background: #5FBDFD;
+}
+.add-forms .btn-reload {
+    background-color: #5FBDFD;
+}
+.add-forms .layui-upload .upload-img {
+    max-width: 91px;
 }

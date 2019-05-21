@@ -71,8 +71,7 @@
                         <div class="box-header with-border">
                             <h4 class="box-title new-box-title">用户明细</h4>
                             <div class="pull-right">
-                                <button type="button" class="btn new-btn-sm btn-info addBtn" data-toggle="modal"
-                                    data-target="#userInfoModal"> 新增</button>
+                                <button type="button" class="btn new-btn-sm btn-info addBtn" onclick="addBtn()"> 新增</button>
                                 <button type="button" class="btn new-btn-sm btn-red deletBtn"> 删除</button>
                                 <button type="button" class="btn new-btn-sm btn-box-tool" data-widget="collapse"><i
                                         class="fa fa-minus"></i>
@@ -81,18 +80,28 @@
                         </div>
                         <div class="box-body">
                             <div id="myGrid" style="height: 400px;width:100%;" class="ag-theme-balham"></div>
-                            <div class="ag-paging-panel ag-unselectable">
-                                <span ref="eSummaryPanel" class="ag-paging-row-summary-panel">
-                                    共<span ref="lbRecordCount">3</span>条
+                            <div class="table_nav">
+                                <span class="table_arrow">
+                                    <button class="fa fa-step-backward font-12" onclick="onBtFirst()"></button>
+                                    <button class="fa fa-angle-left font-15" onclick="onBtPrevious()" id="btPrevious"></button>
+                                    当前 <span id="lbCurrentPage"> </span> 到 <span id="lbTotalPages"> 2 </span> 页
+                                    <button class="fa fa-angle-right font-15" onclick="onBtNext()" id="btNext"></button>
+                                    <button class="fa fa-step-forward font-12" onclick="onBtLast()" id="btLast"></button>
                                 </span>
-                                <span class="ag-paging-page-summary-panel">
-                                    <button type="button" class="ag-paging-button" ref="btFirst" disabled="">First</button>
-                                    <button type="button" class="ag-paging-button" ref="btPrevious" disabled="">Previous</button>
-                                    第 <span ref="lbCurrent">1</span> 到第 <span ref="lbTotal">2</span> 页
-                                    <button type="button" class="ag-paging-button" ref="btNext">Next</button>
-                                    <button type="button" class="ag-paging-button" ref="btLast">Last</button>
+                                <span class="ag-paging-row-summary-panel">
+                                    共<span ref="lbRecordCount" id="lbRowCount"></span>条
                                 </span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box no-border">
+                        <div class="box-header with-border">
+                            <h4 class="box-title new-box-title addFormTitle">新增明细</h4>
+                        </div>
+                        <div class="box-body" id="table">
+                            
                         </div>
                     </div>
                 </div>
@@ -101,8 +110,9 @@
     </div>
     <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../plugins/layui/layui.js"></script>
     <script src="../../plugins/ag-grid/dist/ag-grid-community.js"></script>
-    <script src="../../dist/js/ag-grid-components.js"></script>
+    <script src="../../dist/js/components.js"></script>
     <script src="../../dist/js/app.js"></script>
     <script>
         var gridOptions = {
@@ -115,7 +125,11 @@
                     headerName: "帐号", field: "experience", sortable: true,editable: true, filter: 'personFilter',floatingFilterComponent: "personFloatingFilterComponent", tooltipField: 'experience'
                 },
                 { headerName: "姓名", field: "name", cellEditor: 'agRichSelectCellEditor', },
-                { headerName: "角色", field: "juese", cellEditor: 'agSelectCellEditor', },
+                { headerName: "角色", field: "juese", editable: true, cellEditor: 'agSelectCellEditor',
+                    cellEditorParams: {
+                        values: ['测试组', '管理员']
+                    }
+                },
                 { headerName: "手机", field: "phone", cellEditor: 'agRichSelectCellEditor', },
                 { headerName: "邮箱", field: "email", cellEditor: 'agRichSelectCellEditor', tooltipField: 'email'},
                 { headerName: "是否启用", field: "isUse", editable: true,
@@ -139,7 +153,7 @@
             },
             suppressRowClickSelection: true,
             animateRows: true, // 动画
-            floatingFilter: true,
+            // floatingFilter: true,
             pagination: true, // 分页
             paginationPageSize: 2,
             suppressPaginationPanel: true,
@@ -149,11 +163,17 @@
             onCellEditingStarted: function (event) { // 单元格编辑开始
                 console.log('开始');
             },
-            onCellEditingStopped: function (event) { // 单元格编辑结束
+            onCellEditingStopped: function (event,data) { // 单元格编辑结束
                 console.log('结束');
             },
             onPaginationChanged: function(){
-                console.log('onPaginationPageLoaded');
+                if (gridOptions.api) {
+                    // we +1 to current page, as pages are zero based
+                    setText('#lbTotalPages',gridOptions.api.paginationGetTotalPages())
+                    setText('#lbCurrentPage', gridOptions.api.paginationGetCurrentPage() + 1);
+                    setText('#lbRowCount', gridOptions.api.paginationGetRowCount());
+                    setLastButtonDisabled(!gridOptions.api.paginationIsLastPageFound());
+                }
             },
             components: { // 自定义组件
                 personFilter: PersonFilter,
@@ -165,13 +185,43 @@
             document.querySelector(selector).innerHTML = text;
         }
 
+        function setLastButtonDisabled(disabled) {
+            document.querySelector('#btLast').disabled = disabled;
+            if((gridOptions.api.paginationGetCurrentPage() + 1 ) == gridOptions.api.paginationGetTotalPages()) {
+                document.querySelector("#btNext").disabled = !disabled;
+                document.querySelector("#btPrevious").disabled = disabled
+            } else {
+                document.querySelector("#btNext").disabled = disabled;
+                document.querySelector("#btPrevious").disabled = !disabled
+            }
+        }
+
+        function setRowData(rowData) {
+            allOfTheData = rowData;
+            createNewDatasource();
+        }
+
+        function onBtFirst() {
+            gridOptions.api.paginationGoToFirstPage();
+            console.log(11)
+        }
+
+        function onBtLast() {
+            gridOptions.api.paginationGoToLastPage();
+        }
+
+        function onBtNext() {
+            gridOptions.api.paginationGoToNextPage();
+        }
+
+        function onBtPrevious() {
+            gridOptions.api.paginationGoToPreviousPage();
+        }
+
         fetch('https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/admin_user').then(function (response) {
             return response.json();
         }).then(function (data) {
-            console.log(data)
-
             gridOptions.api.setRowData(data.data.data);
-            gridOptions.api.paginationSetPageSize(2)
         })
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -179,7 +229,28 @@
 
             new agGrid.Grid(eGridDiv, gridOptions);
         })
-
+        var formData = {
+            id: "#table",
+            title: "新增明细",
+            textInput: [
+                {fieldName: "experience",textName: "帐号",inputType: "text",required: true,requiredType: ""},
+                {fieldName: "password",textName: "密码",inputType: "password",required: true,requiredType: ""},
+                {fieldName: "name",textName: "姓名或昵称",inputType: "text",required: true,requiredType: ""},
+                {fieldName: "phone",textName: "手机号",inputType: "tel",required: false,requiredType: "telephone"},
+                {fieldName: "email",textName: "邮箱",inputType: "email",required: false,requiredType: "email"}
+            ],
+            fileInput: [
+                {fieldName: "img",textName: "头像",inputType: "file",required: false, requiredType: ""}
+            ],
+            radioInput: [
+                {fieldName: "isUse",textName: "是否启用", inputType: "radio",data: ["是","否"],required: true,requiredType: ""}
+            ],
+            checkInput: [
+                {fieldName: "juese",textName: "角色",inputType: "checkbox",data: ['测试组', '管理员'],required: true,requiredType: ""}
+            ],
+        }
+        addForm(formData)
+       
     </script>
 </body>
 
