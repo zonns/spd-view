@@ -1,4 +1,4 @@
-// 自定义筛选
+//  ------------------------------------------自定义筛选
 function PersonFilter() {
 }
 
@@ -73,7 +73,7 @@ PersonFilter.prototype.destroy = function () {
     this.eFilterText.removeEventListener("input", this.onFilterChanged);
 };
 
-// 搜索框
+//  --------------------------- 搜索框
 function PersonFloatingFilterComponent() {
 }
 
@@ -103,9 +103,29 @@ PersonFloatingFilterComponent.prototype.destroy = function () {
     this.input.removeEventListener('input', this.changeEventListener);
 };
 
+//  ------------------------------------------- 表格内操作
+// function TableToolCheck(){
+
+// }
+// TableToolCheck.prototype.init = function(params) {
+//     this.params = params;
+//     this.eGui = document.createElement('button')
+//     this.eGui.innerText = '编辑'
+//     this.eGui.className = 'btn-font'
+//     this.eventListener = function(){
+//         console.log(params)
+//     }
+//     this.eGui.addEventListener('click',this.eventListener)
+// }
+// TableToolCheck.prototype.getGui = function(){
+//     return this.eGui
+// }
+
+
+
 // form添加
 function addForm(obj, callback) {
-    const $form = $('<form class="layui-form add-forms" layui-filter="forms" action=""></form>')
+    const $form = $('<form class="layui-form add-forms" lay-filter="forms" action=""></form>')
     if (obj.hasOwnProperty("textInput")) {
         for (const key in obj.textInput) {
             if (obj.textInput.hasOwnProperty(key)) {
@@ -130,7 +150,7 @@ function addForm(obj, callback) {
                 var radio = ""
                 const type = element.required ? "lay-verify='required|" + element.requiredType + "'" : "lay-verify='" + element.requiredType + "'"
                 element.data.forEach(value => {
-                    radio += '<input type="radio" name="' + element.fieldName + '" '+type+' value="' + value + '" title="' + value + '">'
+                    radio += '<input type="radio" name="' + element.fieldName + '" '+type+' value="' + value + '" checked title="' + value + '">'
                 });
                 const radioHtml = `<div class="layui-inline">
                     <label class="layui-form-label">${element.textName}</label>
@@ -148,13 +168,14 @@ function addForm(obj, callback) {
             if (obj.checkInput.hasOwnProperty(key)) {
                 const element = obj.checkInput[key];
                 var input = ""
-                const type = element.required ? "lay-verify='required|" + element.requiredType + "'" : "lay-verify='" + element.requiredType + "'"
+                const type = element.required ? "lay-verify='" + element.requiredType + "'" : "lay-verify='" + element.requiredType + "'"
                 element.data.forEach(value => {
-                    input += '<input type="checkbox" name="' + element.fieldName + '" '+type+' title="' + value + '" lay-skin="primary">'
+                    input += '<input type="checkbox" name="' + element.fieldName + '" title="' + value + '" value="'+value+'" lay-skin="primary">'
                 });
                 const checkHtml = `<div class="layui-inline">
                     <label class="layui-form-label">${element.textName}</label>
-                    <div class="layui-input-inline">${input}
+                    <div class="layui-input-inline">
+                        <div ${type}>${input}</div>
                     </div>
                 </div>`
                 $form.append(checkHtml)
@@ -169,8 +190,8 @@ function addForm(obj, callback) {
                 const uploadHtml = `
                 <div class="layui-upload">
                     <button type="button" class="layui-btn btn-upload" id="btUpload">上传图片</button>
-                    <input type="hidden" id="img_url" name="${element.textName}" value=""/>
                     <div class="layui-upload-list">
+                        <input type="hidden" id="imgUrl" name="${element.fieldName}">
                         <img class="layui-upload-img upload-img" id="upImage">
                         <p id="upText"></p>
                     </div>
@@ -186,7 +207,7 @@ function addForm(obj, callback) {
 
     var button = `<div class="layui-inline">
             <div class="layui-input-inline">
-                <button class="btn new-btn-form-normal btn-blackb" lay-submit="" lay-filter="formDemo">立即提交</button>
+                <button class="btn new-btn-form-normal btn-blackb" lay-submit="" lay-filter="formDemo">提交</button>
                 <button type="reset" class="btn new-btn-form-normal layui-btn-primary">重置</button>
             </div>
         </div>`
@@ -201,7 +222,8 @@ function addForm(obj, callback) {
             const upload = layui.upload;
             const uploadInst = upload.render({
                 elem: '#btUpload',
-                url: '/upload/',
+                url: obj.imgUrl,
+                // field: "img",
                 before: function (obj) {
                     //预读本地文件示例，不支持ie8
                     obj.preview(function (index, file, result) {
@@ -213,9 +235,7 @@ function addForm(obj, callback) {
                     if (res.code > 0) {
                         layer.msg('上传失败');
                     }
-                    $("#img_url").value(res.url)
-
-
+                    $("#imgUrl").val(res.data.img)
                     //上传成功
                 },
                 error: function () {
@@ -242,19 +262,58 @@ function addForm(obj, callback) {
                     if (!phonereg.test(value) && value.length > 0) {
                         return '手机格式不正确';
                     }
+                },
+                "mustradio": function(value,item) {
+
+                },
+                "mustcheck": function(value,item) {
+                    var va = $(item).find("input[type='checkbox']:checked").val();
+                    if (typeof (va) == "undefined") {
+                        return "请选择角色";
+                    }
                 }
             })
 
+            $("button[type='reset']").click(function(){
+                const elms = $(".add-forms input[name]");
+                const obj = {};
+                $("input[type='hidden']").val("")
+                $("#upImage").attr("src","")
+                $.each(elms, function (i, item) {
+                    var name = $(item).attr("name");
+                    obj[name] = "";
+                });
+            })
             // 表单提交
             form.on('submit(formDemo)', function (data) {
-                layer.msg(JSON.stringify(data.field));
-
-                for( i = 1;  i<4 ; i++){
-                    if(data.field['testchk'+i] != "" && data.field['testchk'+i] != null && data.field['testchk'+i] != undefined){
-                        testArr.push(data.field['testchk'+i]);
+                var checkVal = [];
+                var name = "";
+                for (const key in obj.checkInput) {
+                    if (obj.checkInput.hasOwnProperty(key)) {
+                        const element = obj.checkInput[0];
+                        name = element.fieldName
+                        console.log($("input:checkbox[name='"+name+"']:checked"))
+                        $("input:checkbox[name='"+name+"']:checked").each(function(i){
+                            checkVal[i] = $(this).val()
+                        });
+                        console.log(checkVal)
                     }
-                    
                 }
+                data.field[name] = checkVal.join(",")
+                delete data.field['file']
+                console.log(data.field)
+                $.ajax({
+                    url: obj.formUrl,
+                    data: data.field,
+                    type: "post",
+                    success: function(result) {
+
+                    },
+                    error: function(result) {
+
+                    }
+                })
+                
                 return false;
             });
 

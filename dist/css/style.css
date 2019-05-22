@@ -58,14 +58,35 @@
     color: #444;
     border-color: #ddd;
 }
+.btn-green {
+    background-color: #31CBCF;
+    border: 1px solid #11ACB0;
+    color: #fff;
+}
+.btn-green:focus,
+.btn-green:active:focus,
+.btn-green.active:focus,
+.btn-green.focus,
+.btn-green:active.focus,
+.btn-green.active.focus,
+.btn-green:hover {
+    background-color: #11ACB0;
+    color: #fff !important;
+}
 .btn-red {
     background-color: #F75553;
     color: #fff;
     border-color: #F73E3E;
 }
+.btn-red:focus,
+.btn-red:active:focus,
+.btn-red.active:focus,
+.btn-red.focus,
+.btn-red:active.focus,
+.btn-red.active.focus,
 .btn-red:hover {
-    color: #fff;
     background-color: #DD4B3C;
+    color: #fff !important;
 }
 .btn-blackb {
     background-color: #53657D ;
@@ -101,6 +122,11 @@
 }
 button[type="reset"]:hover {
     border: 1px solid #C9C9C9
+}
+.btn-font {
+    border: 0;
+    color: #5FBDFD;
+    background: none;
 }
 /* layui switch 颜色 */
 .new-skin-blue .layui-form-onswitch {
@@ -394,4 +420,17 @@ div[xm-select-skin=default] dl dd:not(.xm-dis-disabled) i {
 }
 .add-forms .layui-upload .upload-img {
     max-width: 91px;
+}
+.table-box .ag-theme-balham .ag-root {
+    border: 1px solid #F4F4F4;
+}
+.table-box .ag-theme-balham .ag-header {
+    background-color: #FCFDFE;
+    border-bottom: 1px solid #F4F4F4;
+}
+.table-box .ag-theme-balham .ag-header-cell::after, .ag-theme-balham .ag-header-group-cell::after {
+    border-right: 1px solid #f4f4f4;
+}
+.table-box .ag-theme-balham .ag-row {
+    border-color: #f4f4f4;
 }

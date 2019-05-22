@@ -71,34 +71,40 @@
                         <div class="box-header with-border">
                             <h4 class="box-title new-box-title">用户明细</h4>
                             <div class="pull-right">
-                                <button type="button" class="btn new-btn-sm btn-info addBtn" onclick="addBtn()"> 新增</button>
-                                <button type="button" class="btn new-btn-sm btn-red deletBtn"> 删除</button>
+                                <button type="button" class="btn new-btn-sm btn-info addBtn" onclick="showAdd(1)"> 新增</button>
+                                <button type="button" class="btn new-btn-sm btn-red deletBtn" onclick="onRemoveSelected()"> 删除</button>
                                 <button type="button" class="btn new-btn-sm btn-box-tool" data-widget="collapse"><i
                                         class="fa fa-minus"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="box-body">
-                            <div id="myGrid" style="height: 400px;width:100%;" class="ag-theme-balham"></div>
-                            <div class="table_nav">
-                                <span class="table_arrow">
-                                    <button class="fa fa-step-backward font-12" onclick="onBtFirst()"></button>
-                                    <button class="fa fa-angle-left font-15" onclick="onBtPrevious()" id="btPrevious"></button>
-                                    当前 <span id="lbCurrentPage"> </span> 到 <span id="lbTotalPages"> 2 </span> 页
-                                    <button class="fa fa-angle-right font-15" onclick="onBtNext()" id="btNext"></button>
-                                    <button class="fa fa-step-forward font-12" onclick="onBtLast()" id="btLast"></button>
-                                </span>
-                                <span class="ag-paging-row-summary-panel">
-                                    共<span ref="lbRecordCount" id="lbRowCount"></span>条
-                                </span>
+                            <div class="table-box">
+                                <div id="myGrid" style="height: 400px;width:100%;" class="ag-theme-balham"></div>
+                                <div class="table_nav">
+                                    <span class="table_arrow">
+                                        <button class="fa fa-step-backward font-12" onclick="onBtFirst()"></button>
+                                        <button class="fa fa-angle-left font-15" onclick="onBtPrevious()" id="btPrevious"></button>
+                                        当前 <span id="lbCurrentPage"> </span> 到 <span id="lbTotalPages"> 2 </span> 页
+                                        <button class="fa fa-angle-right font-15" onclick="onBtNext()" id="btNext"></button>
+                                        <button class="fa fa-step-forward font-12" onclick="onBtLast()" id="btLast"></button>
+                                    </span>
+                                    <span class="ag-paging-row-summary-panel">
+                                        共<span ref="lbRecordCount" id="lbRowCount"></span>条
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 addBox" style="display: none">
                     <div class="box no-border">
                         <div class="box-header with-border">
                             <h4 class="box-title new-box-title addFormTitle">新增明细</h4>
+                            <div class="pull-right">
+                                <button type="button" class="btn new-btn-sm btn-info" onclick="updateItems()">保存</button>
+                                <button type="button" class="btn new-btn-sm btn-red cancelBtn" onclick="showAdd(3)"> 关闭</button>
+                            </div>
                         </div>
                         <div class="box-body" id="table">
                             
@@ -137,7 +143,8 @@
                     cellEditorParams: {
                         values: ['是', '否']
                     }
-                }
+                },
+                { headerName: "操作", field: "tools", cellRenderer: 'tableToolCheck'}
             ],
             rowSelection: 'multiple',
             autoGroupColumnDef: { // 显示复选框
@@ -168,7 +175,6 @@
             },
             onPaginationChanged: function(){
                 if (gridOptions.api) {
-                    // we +1 to current page, as pages are zero based
                     setText('#lbTotalPages',gridOptions.api.paginationGetTotalPages())
                     setText('#lbCurrentPage', gridOptions.api.paginationGetCurrentPage() + 1);
                     setText('#lbRowCount', gridOptions.api.paginationGetRowCount());
@@ -178,6 +184,7 @@
             components: { // 自定义组件
                 personFilter: PersonFilter,
                 personFloatingFilterComponent: PersonFloatingFilterComponent,
+                tableToolCheck: TableToolCheck
             }
         };
       
@@ -203,7 +210,6 @@
 
         function onBtFirst() {
             gridOptions.api.paginationGoToFirstPage();
-            console.log(11)
         }
 
         function onBtLast() {
@@ -218,20 +224,94 @@
             gridOptions.api.paginationGoToPreviousPage();
         }
 
+        function onAddRow() {
+            var newItem = createNewRowData();
+            var res = gridOptions.api.updateRowData({add: [newItem]});
+            printResult(res);
+        }
+        // 删除行
+        function onRemoveSelected() {
+            var selectedData = gridOptions.api.getSelectedRows();
+            var res = gridOptions.api.updateRowData({remove: selectedData});
+            printResult(res);
+        }
+
+        function updateItems() {
+            // update the first 5 items
+            var itemsToUpdate = [];
+            gridOptions.api.forEachNodeAfterFilterAndSort( function(rowNode, index) {
+                // only do first 5
+                // if (index>=5) { return; }
+                var data = rowNode.data;
+                // data.price = Math.floor((Math.random()*20000) + 20000);
+                itemsToUpdate.push(data);
+            });
+            var res = gridOptions.api.updateRowData({update: itemsToUpdate});
+            printResult(res);
+        }
+        function printResult(res) {
+            console.log('---------------------------------------')
+            if (res.add) {
+                res.add.forEach( function(rowNode) {
+                    console.log('Added Row Node', rowNode);
+                });
+            }
+            if (res.remove) {
+                res.remove.forEach( function(rowNode) {
+                    console.log('Removed Row Node', rowNode);
+                });
+            }
+            if (res.update) {
+                res.update.forEach( function(rowNode) {
+                    console.log('Updated Row Node', rowNode);
+                });
+            }
+        }
+        // 行内操作
+        function TableToolCheck(){}
+        TableToolCheck.prototype.init = function(params) {
+            this.params = params;
+            this.eGui = document.createElement('button')
+            this.eGui.innerText = '编辑'
+            this.eGui.className = 'btn-font'
+            this.eventListener = function(){
+                console.log(params.data)
+                // forms
+               
+                addForm(
+                    {
+                        title: "修改信息",
+                        formUrl: "https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/postImg",
+                    },function(result) {
+                        console.log(this)
+                        const _layui = result
+                        _layui.form.val('forms',params.data)
+                        $("input[type='hidden']").val(params.data.img)
+                        $("#upImage").attr("src",params.data.img)
+                        _layui.form.render()
+                        _layui.upload.render()
+                        $(".addBox").show()
+                    }
+                )
+
+            }
+            this.eGui.addEventListener('click',this.eventListener)
+        }
+        TableToolCheck.prototype.getGui = function(){
+            return this.eGui
+        }
+        
         fetch('https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/admin_user').then(function (response) {
             return response.json();
         }).then(function (data) {
             gridOptions.api.setRowData(data.data.data);
         })
 
-        document.addEventListener("DOMContentLoaded", function () {
-            var eGridDiv = document.querySelector('#myGrid');
-
-            new agGrid.Grid(eGridDiv, gridOptions);
-        })
         var formData = {
             id: "#table",
             title: "新增明细",
+            formUrl: "https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/postImg",
+            imgUrl: "https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/postImg",
             textInput: [
                 {fieldName: "experience",textName: "帐号",inputType: "text",required: true,requiredType: ""},
                 {fieldName: "password",textName: "密码",inputType: "password",required: true,requiredType: ""},
@@ -246,11 +326,40 @@
                 {fieldName: "isUse",textName: "是否启用", inputType: "radio",data: ["是","否"],required: true,requiredType: ""}
             ],
             checkInput: [
-                {fieldName: "juese",textName: "角色",inputType: "checkbox",data: ['测试组', '管理员'],required: true,requiredType: ""}
+                {fieldName: "juese",textName: "角色",inputType: "checkbox",data: ['测试组', '管理员'],required: true,requiredType: "mustcheck"}
             ],
         }
         addForm(formData)
-       
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var eGridDiv = document.querySelector('#myGrid');
+
+            new agGrid.Grid(eGridDiv, gridOptions);
+        })
+        
+        function showAdd(val){
+            if(val == 1) {
+                $(".addBox").show()
+                addForm({title: "新增明细",},function(result){
+                    const _layui = result
+                    const elms = $(".add-forms input[name]");
+                    const obj = {};
+                    $("input[type='hidden']").val("")
+                    $("#upImage").attr("src","")
+                    $.each(elms, function (i, item) {
+                        var name = $(item).attr("name");
+                        obj[name] = "";
+                    });
+                    _layui.form.val('forms',obj)
+                    _layui.form.render()
+                    _layui.upload.render()
+                })
+            } else if(2) {
+                $(".addBox").hide()
+            } 
+       }
+
+
     </script>
 </body>
 

@@ -93,9 +93,10 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">添加用户</h4>
+                        <button id="aa">222222</button>
                     </div>
                     <div class="modal-body">
-                        <form class="layui-form" action="">
+                        <form class="layui-form" lay-filter="forms" action="">
                             <div class="layui-form-item">
                                 <label class="layui-form-label no-padding-lf">角色</label>
                                 <div class="layui-input-block">
@@ -290,6 +291,21 @@
                 layer.msg(JSON.stringify(data.field));
                 return false;
             });
+
+            $("#aa").click(function (){
+                console.log(111)
+                form.val('forms',{
+                    email: "210@qq.com",
+                    experience: "admin",
+                    img: "https://img4.duitang.com/uploads/item/201406/30/20140630212346_Lnmxr.jpeg",
+                    // isUse: "是",
+                    // juese: "管理员",
+                    name: "小明",
+                    phone: "13145678977",
+                    userid: "001"
+                })
+                form.render()
+            })
         });
 
         function headimg(d) {
