@@ -133,9 +133,8 @@ $(function () {
                                 icon: "fa fa-circle-o",
                                 targetType: "iframe-tab",
                                 module: chiArr[i].module,
-                                url: App.getbasePath() + "pages/" + chiArr[i].module + "/"+ resData[i].module +".html"
+                                url: App.getbasePath() + "pages/" + chiArr[i].module + "/"+ resData[j].module +".html"
                             };
-                            // console.log(resData[i].module)
                             chiArr[i].children.push(obj);
                             // resData.splice(j, 1);
                             // j--;

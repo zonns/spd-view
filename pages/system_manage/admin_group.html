@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../../dist/css/ionicons.min.css">
     <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="../../plugins/layui/css/layui.css">
+    <link rel="stylesheet" href="../../plugins/layui_ext/dtree/dtree.css">
+    <link rel="stylesheet" href="../../plugins/layui_ext/dtree/font/dtreefont.css">
     <link rel="stylesheet" href="../../plugins/ag-grid/dist/styles/ag-grid.css">
     <link rel="stylesheet" href="../../plugins/ag-grid/dist/styles/ag-theme-balham.css">
     <link rel="stylesheet" href="../../dist/css/style.css">
@@ -42,36 +44,11 @@
     <div id="admin">
         <section class="content">
             <!-- /.row -->
-            <div class="row">
-                <!-- <div class="col-md-12">
-                    <div class="box no-border">
-                        <div class="box-header with-border">
-                            <h4 class="box-title new-box-title">查询表单</h4>
-                            <div class="pull-right">
-                                <button type="button" class="btn new-btn-sm btn-info searchBtn"> 查询</button>
-                                <button type="reset" class="btn new-btn-sm btn-white clearBtn"> 清空</button>
-                                <button type="button" class="btn new-btn-sm btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div class="form-horizontal">
-                                <div class="input-group">
-                                    <label for="" class="col-sm-3 no-padding-lf control-label">用户：</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control input-sm" id="userName"
-                                            placeholder="账户/用户名/手机号/邮箱">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+            <div class="row tableInfo-box">
                 <div class="col-md-12">
                     <div class="box no-border">
                         <div class="box-header with-border">
-                            <h4 class="box-title new-box-title">用户明细</h4>
+                            <h4 class="box-title new-box-title">角色管理</h4>
                             <div class="pull-right">
                                 <button type="button" class="btn new-btn-sm btn-info addBtn" onclick="showAdd(1)">
                                     新增</button>
@@ -118,43 +95,17 @@
                         <div class="box-body" id="table">
                             <form class="layui-form add-forms" lay-filter="forms" action="">
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">账号</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="experience" required lay-verify='required'
-                                            placeholder="请输入您的账号信息" autocomplete="off"
-                                            class="layui-input">
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">密码</label>
-                                    <div class="layui-input-inline">
-                                        <input type="password" name="password" required lay-verify='required'
-                                            placeholder="请输入您的密码" autocomplete="off"
-                                            class="layui-input">
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">姓名或昵称</label>
+                                    <label class="layui-form-label">角色名</label>
                                     <div class="layui-input-inline">
                                         <input type="text" name="name" required lay-verify='required'
-                                            placeholder="请输入您的姓名或昵称" autocomplete="off"
-                                            class="layui-input">
+                                            placeholder="请输入您的角色名称" autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">手机号</label>
+                                    <label class="layui-form-label">描述</label>
                                     <div class="layui-input-inline">
-                                        <input type="tel" name="phone" lay-verify='telephone'
-                                            placeholder="请输入您的手机号" autocomplete="off"
-                                            class="layui-input">
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">邮箱</label>
-                                    <div class="layui-input-inline">
-                                        <input type="email" name="email" lay-verify='email'
-                                            placeholder="请输入您的邮箱" autocomplete="off"
-                                            class="layui-input">
+                                        <input type="text" name="miaoshu" required lay-verify='required'
+                                            placeholder="请输入您的" autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
                                 <div class="layui-inline">
@@ -165,29 +116,57 @@
                                     </div>
                                 </div>
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">角色</label>
                                     <div class="layui-input-inline">
-                                        <div required lay-verify="mustcheck">
-                                            <input type="checkbox" name="juese" title="测试组" value="测试组" lay-skin="primary">
-                                            <input type="checkbox" name="juese" title="管理员" value="管理员" lay-skin="primary">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="layui-upload">
-                                    <button type="button" class="layui-btn btn-upload" id="btUpload">上传图片</button>
-                                    <div class="layui-upload-list">
-                                        <input type="hidden" id="imgUrl" name="img">
-                                        <img class="layui-upload-img upload-img" id="upImage">
-                                        <p id="upText"></p>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
-                                    <div class="layui-input-inline">
-                                        <button class="btn new-btn-form-normal btn-blackb" lay-submit="" lay-filter="formDemo">提交</button>
-                                        <button type="reset" class="btn new-btn-form-normal layui-btn-primary">重置</button>
+                                        <button class="btn new-btn-form-normal btn-blackb" lay-submit=""
+                                            lay-filter="formDemo">提交</button>
+                                        <button type="reset"
+                                            class="btn new-btn-form-normal layui-btn-primary">重置</button>
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group_treeBox">
+                <div class="col-md-12">
+                    <div class="box no-border">
+                        <div class="box-header with-border">
+                            <h4 class="box-title new-box-title">角色授权</h4>
+                        </div>
+                        <div class="box-body calcHeight">
+                            <div>
+                                <div class="group-tools text-center margin-b10">
+                                    <div class="layui-btn-group">
+                                        <div class="layui-btn-group">
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" dtree-id="demoTree" dtree-menu="moveDown" title="展开全部节点">
+                                                <i class="dtreefont dtree-icon-move-down"></i>
+                                            </button>
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" dtree-id="demoTree" dtree-menu="moveUp" title="收缩全部节点">
+                                                <i class="dtreefont dtree-icon-move-up"></i>
+                                            </button>
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" dtree-id="demoTree" dtree-menu="refresh" title="刷新">
+                                                <i class="dtreefont dtree-icon-refresh"></i>
+                                            </button>
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" dtree-id="demoTree" dtree-menu="checkAll" title="全选节点">
+                                                <i class="dtreefont dtree-icon-roundcheckfill"></i>
+                                            </button>
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" dtree-id="demoTree" dtree-menu="unCheckAll" title="全不选节点">
+                                                <i class="dtreefont dtree-icon-roundclosefill"></i>
+                                            </button>
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" dtree-id="demoTree" dtree-menu="invertAll" title="反选节点">
+                                                <i class="dtreefont dtree-icon-roundcheck"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul id="demoTree" class="dtree" data-id="0"></ul>
+                            </div>
+                        </div>
+                        <div class="box-footer text-right">
+                            <button class="btn new-btn-form-normal btn-blackb">保存</button>
+                            <button class="btn new-btn-form-normal layui-btn-primary">关闭</button>
                         </div>
                     </div>
                 </div>
@@ -197,13 +176,15 @@
     <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
     <script src="../../plugins/layui/layui.all.js"></script>
+    <script src="../../plugins/layui_ext/dtree/dtree.js"></script>
     <script src="../../plugins/ag-grid/dist/ag-grid-community.js"></script>
     <script src="../../dist/js/components.js"></script>
     <script src="../../dist/js/app.js"></script>
     <script>
         var form = layui.form;
         var upload = layui.upload;
-
+        var dtree = layui.dtree;
+        var flag = true;
         form.verify({
             "email": function (value, item) {
                 var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
@@ -217,10 +198,10 @@
                     return '手机格式不正确';
                 }
             },
-            "mustradio": function(value,item) {
+            "mustradio": function (value, item) {
 
             },
-            "mustcheck": function(value,item) {
+            "mustcheck": function (value, item) {
                 var va = $(item).find("input[type='checkbox']:checked").val();
                 if (typeof (va) == "undefined") {
                     return "请选择角色";
@@ -228,11 +209,11 @@
             }
         })
 
-        $("button[type='reset']").click(function(){
+        $("button[type='reset']").click(function () {
             const elms = $(".add-forms input[name]");
             const obj = {};
             $("input[type='hidden']").val("")
-            $("#upImage").attr("src","")
+            $("#upImage").attr("src", "")
             $.each(elms, function (i, item) {
                 var name = $(item).attr("name");
                 obj[name] = "";
@@ -242,7 +223,7 @@
         form.on('submit(formDemo)', function (data) {
             var checkVal = [];
             var name = "juese";
-            $("input:checkbox[name='"+name+"']:checked").each(function(i){
+            $("input:checkbox[name='" + name + "']:checked").each(function (i) {
                 checkVal[i] = $(this).val()
             });
             data.field[name] = checkVal.join(",")
@@ -251,63 +232,22 @@
                 url: "https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/postImg",
                 data: data.field,
                 type: "post",
-                success: function(result) {
+                success: function (result) {
 
                 },
-                error: function(result) {
+                error: function (result) {
 
                 }
             })
         });
 
-        const uploadInst = upload.render({
-            elem: '#btUpload',
-            url: "https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/postImg",
-            // field: "img",
-            before: function (obj) {
-                //预读本地文件示例，不支持ie8
-                obj.preview(function (index, file, result) {
-                    $('#upImage').attr('src', result); //图片链接（base64）
-                });
-            },
-            done: function (res) {
-                //如果上传失败
-                if (res.code > 0) {
-                    layer.msg('上传失败');
-                }
-                $("#imgUrl").val(res.data.img)
-                //上传成功
-            },
-            error: function () {
-                //演示失败状态，并实现重传
-                var demoText = $('#upText');
-                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs btn-reload">重试</a>');
-                demoText.find('.demo-reload').on('click', function () {
-                    uploadInst.upload();
-                });
-            }
-        });
-
         var gridOptions = {
             columnDefs: [ // 表头
-                {
-                    headerName: "头像", field: "img", rowGroup: true, cellRenderer: function (params) {
-                        let array = params.value
-                        return `<img style="height: 100%" src="${params.value}" />`
-                    }
-                },
-                {
-                    headerName: "帐号", field: "experience", sortable: true, editable: true, filter: 'personFilter', floatingFilterComponent: "personFloatingFilterComponent", tooltipField: 'experience'
-                },
-                { headerName: "姓名", field: "name", cellEditor: 'agRichSelectCellEditor', },
-                {
-                    headerName: "角色", field: "juese", editable: true, cellEditor: 'agSelectCellEditor',
-                    cellEditorParams: {
-                        values: ['测试组', '管理员']
-                    }
-                },
-                { headerName: "手机", field: "phone", cellEditor: 'agRichSelectCellEditor', },
-                { headerName: "邮箱", field: "email", cellEditor: 'agRichSelectCellEditor', tooltipField: 'email' },
+                // {
+                //     headerName: "ID", field: "id", sortable: true, editable: true, filter: 'personFilter', floatingFilterComponent: "personFloatingFilterComponent", tooltipField: 'experience'
+                // },
+                { headerName: "角色名", field: "name", rowGroup: true, cellEditor: 'agRichSelectCellEditor' },
+                { headerName: "描述", field: "miaoshu", cellEditor: 'agRichSelectCellEditor' },
                 {
                     headerName: "是否启用", field: "isUse", editable: true,
                     cellEditor: 'agSelectCellEditor',
@@ -319,8 +259,8 @@
             ],
             rowSelection: 'multiple',
             autoGroupColumnDef: { // 显示复选框
-                headerName: "用户ID",
-                field: "userid",
+                headerName: "ID",
+                field: "id",
                 cellClass: { 'text-align': 'left' },
                 headerCheckboxSelection: true,
                 headerCheckboxSelectionFilteredOnly: true,
@@ -442,30 +382,80 @@
         function TableToolCheck() { }
         TableToolCheck.prototype.init = function (params) {
             this.params = params;
-            this.eGui = document.createElement('button')
-            this.eGui.innerText = '编辑'
-            this.eGui.className = 'btn-font'
-            this.eventListener = function () {
+            this.eGui = document.createElement('div')
+            this.eGui.innerHTML = '<button class="btn-font edit">编辑</button> <button class="btn-font-yellow authorize">授权</button>'
+            this.eEdit = this.eGui.querySelector(".edit");
+            this.eAuthorize = this.eGui.querySelector(".authorize");
+            // this.eventListener = function () {
+
+            // }
+            this.eEdit.addEventListener('click', function () {
                 form.val('forms', params.data)
-                $(".addFormTitle").text("编辑用户")
+                $(".addFormTitle").text("编辑角色")
                 $("input[type='hidden']").val(params.data.img)
                 $("#upImage").attr("src", params.data.img)
                 $("input[type='password']").removeAttr("required lay-verify")
                 form.render()
                 upload.render()
                 $(".addBox").show()
+            })
+            
+            this.eAuthorize.addEventListener('click', function () {
+                getTreeData(function (data) {
+                    const treeData = data.data
+                    var attr = {
+                        id: "id",
+                        pid: "pid",
+                        text: "name",
+                        rootId: 0,
+                        icon: "fa fa-circle-o",
+                        targetType: "iframe-tab"
+                    }
+                    // console.log(toGetTreeData(treeData,attr))
+                    var DemoTree = dtree.render({
+                        elem: "#demoTree",
+                        data: toGetTreeData(treeData, attr),
+                        checkbar: true,
+                        checkbarType: "all",
+                        menubar: true,
+                        menubarTips: {
+                            group: []
+                        },
+                        menubarFun: {
+                            remove: function (checkbarNodes) { // 必须将该方法实现了，节点才会真正的从后台删除哦
+                                return true;
+                            }
+                        },
+                        success: function (data, obj) {
+                            // console.log(data)
+                        },
+                        formatter: {
+                            title: function (data) {
+                                // console.log(data)
+                            }
+                        }
+                    });
+                })
 
-            }
-            this.eGui.addEventListener('click', this.eventListener)
+                if(flag) {
+                    $(".tableInfo-box").addClass("active");
+                    $(".group_treeBox").show().animate({right: "0"},"slow",function(){
+                        
+                    })
+                }
+                flag = false
+                
+
+            })
         }
         TableToolCheck.prototype.getGui = function () {
             return this.eGui
         }
 
-        fetch('https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/admin_user').then(function (response) {
+        fetch('https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/admin_group').then(function (response) {
             return response.json();
         }).then(function (data) {
-            gridOptions.api.setRowData(data.data.data);
+            gridOptions.api.setRowData(data.data);
         })
 
         document.addEventListener("DOMContentLoaded", function () {

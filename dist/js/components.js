@@ -121,7 +121,29 @@ PersonFloatingFilterComponent.prototype.destroy = function () {
 //     return this.eGui
 // }
 
-
+// ------------------------------form 提交的参数
+// var formData = {
+//     id: "#table",
+//     title: "新增明细",
+//     formUrl: "https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/postImg",
+//     imgUrl: "https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/postImg",
+//     textInput: [
+//         { fieldName: "experience", textName: "帐号", inputType: "text", required: true, requiredType: "" },
+//         { fieldName: "password", textName: "密码", inputType: "password", required: true, requiredType: "" },
+//         { fieldName: "name", textName: "姓名或昵称", inputType: "text", required: true, requiredType: "" },
+//         { fieldName: "phone", textName: "手机号", inputType: "tel", required: false, requiredType: "telephone" },
+//         { fieldName: "email", textName: "邮箱", inputType: "email", required: false, requiredType: "email" }
+//     ],
+//     fileInput: [
+//         { fieldName: "img", textName: "头像", inputType: "file", required: false, requiredType: "" }
+//     ],
+//     radioInput: [
+//         { fieldName: "isUse", textName: "是否启用", inputType: "radio", data: ["是", "否"], required: true, requiredType: "" }
+//     ],
+//     checkInput: [
+//         { fieldName: "juese", textName: "角色", inputType: "checkbox", data: ['测试组', '管理员'], required: true, requiredType: "mustcheck" }
+//     ],
+// }
 
 // form添加
 function addForm(obj, callback) {
@@ -327,4 +349,60 @@ function addForm(obj, callback) {
             callback(data)
         }
     })
+}
+
+function getTreeData (callback) {
+    $.ajax({
+        url: "https://www.easy-mock.com/mock/5cdbdb046586ae453ebe611d/example/admin_tree",
+        type: "post",
+        success: function(result) {
+            callback(result)
+        },
+        error: function(result){
+            callback(result)
+        }
+    })
+}
+
+function toGetTreeData(data, attributes) {
+    let resData = data;
+    console.log(resData)
+    let tree = [];
+    for (let i = 0; i < resData.length; i++) {
+        if (resData[i].pid === attributes.rootId) {
+            let obj = {
+                id: resData[i][attributes.id],
+                title: resData[i][attributes.text],
+                children: [],
+                parentId: resData[i].pid,
+                checkArr: resData[i].checked
+            };
+            tree.push(obj);
+            resData.splice(i, 1);
+            i--;
+        }
+    }
+    run(tree);
+    function run(chiArr) {
+        if (resData.length !== 0) {
+            for (let i = 0; i < chiArr.length; i++) {
+                for (let j = 0; j < resData.length; j++) {
+                    if (chiArr[i].id === resData[j][attributes.pid]) {
+                        let obj = {
+                            id: resData[j][attributes.id],
+                            title: resData[j][attributes.text],
+                            children: [],
+                            parentId: resData[j].pid,
+                            checkArr: resData[j].checked
+                        };
+                        chiArr[i].children.push(obj);
+                        // resData.splice(j, 1);
+                        // j--;
+                    }
+                }
+                run(chiArr[i].children);
+            }
+        }
+    }
+    return tree;
 }

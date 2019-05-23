@@ -26,6 +26,9 @@
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+.margin-b10 {
+    margin-bottom: 10px;
+}
 /* 背景 */
 .new-blue {
     background-color: #4D94FE;
@@ -127,6 +130,13 @@ button[type="reset"]:hover {
     border: 0;
     color: #5FBDFD;
     background: none;
+    margin-right: 5px;
+}
+.btn-font-yellow {
+    border: 0;
+    color: #E7BF02;
+    background: none;
+    margin-right: 5px;
 }
 /* layui switch 颜色 */
 .new-skin-blue .layui-form-onswitch {
@@ -434,3 +444,24 @@ div[xm-select-skin=default] dl dd:not(.xm-dis-disabled) i {
 .table-box .ag-theme-balham .ag-row {
     border-color: #f4f4f4;
 }
+.tableInfo-box.active {
+    animation: moveWidth 0.7s 1;
+    width: calc(100% - 275px);
+}
+@keyframes moveWidth {
+    from {width: 100%}
+    to {width: calc(100% - 275px);}
+}
+.group_treeBox {
+    position: absolute;
+    top: 15px;
+    right: -320px;
+    width: 320px;
+    overflow: hidden;
+    display: none;
+    /* height: calc(100% - 15px); */
+}
+.calcHeight {
+    height: calc(100vh - 123px);
+}
+
