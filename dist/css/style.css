@@ -463,5 +463,21 @@ div[xm-select-skin=default] dl dd:not(.xm-dis-disabled) i {
 }
 .calcHeight {
     height: calc(100vh - 123px);
+    overflow: auto;
 }
-
+/* ---------------------------------自定义-------------------------------------- */
+.dtree-zdy-item:hover cite{color: #374869!important} /* 行悬停文字样式*/
+.dtree-zdy-item cite{font-size:14px!important;}
+.dtree-zdy-item:hover {
+    background-color: #ECF0F1 !important;
+}
+.dtree-zdy-item-this {
+    background-color: #ECF0F1 !important;
+}
+/* .dtree-zdy-item-this cite {
+    color: #189CED !important;
+} */
+.dtree-zdy-choose {
+    color: #98BFE8!important;
+}
+.dtree-zdy-icon{color:#283851!important;} 

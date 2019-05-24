@@ -418,20 +418,19 @@
                         checkbar: true,
                         checkbarType: "all",
                         menubar: true,
+                        dot: false,
+                        skin: "zdy",
                         menubarTips: {
                             group: []
                         },
-                        menubarFun: {
-                            remove: function (checkbarNodes) { // 必须将该方法实现了，节点才会真正的从后台删除哦
+                        checkbarFun: {
+                            chooseBefore: function($i, node) { //复选框点击前的回调。
+                                console.log($i,node)
                                 return true;
-                            }
-                        },
-                        success: function (data, obj) {
-                            // console.log(data)
-                        },
-                        formatter: {
-                            title: function (data) {
-                                // console.log(data)
+                            },
+                            chooseDone: function(checkbarNodesParam) { //复选框点击事件完毕后，返回该树关于复选框操作的全部信息。
+                                console.log(checkbarNodesParam)
+                                return ;
                             }
                         }
                     });
